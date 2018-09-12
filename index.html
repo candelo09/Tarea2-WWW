@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Movimientos Clientes</title>
+
+	<link rel="stylesheet" href=css/style.css>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+
+
+
+</head>
+
+<style>
+
+	.form-control {
+	background-color:white;
+	color:#808383;
+	font-family: times-new-roman;
+	font-size: 18px;
+	}
+
+	.container{
+		width:750px;
+		height: 450px;
+		margin-top:60px; 
+
+	}
+
+	.col-md-9{
+		right: 20px;
+	}
+
+
+	body {
+	background-color: #DEF1F1;
+	}	
+
+	h2{
+	color: #808383;
+	}
+
+	table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+	}
+
+	td, th {
+    border: 4px solid #808383;
+    text-align: left;
+    padding: 8px;
+    color:#808383;
+    border-top: 4px solid #808383;
+	}
+
+	td {
+		background-color:#DEF1F1; 
+		color: #808383;
+	}
+
+</style>
+	
+<body>
+
+	<div class="container"></br>
+ 	
+	<h2><strong><center>MOVIMIENTOS CLIENTES</center></strong></h2> </br>
+	
+		<form>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Nombre Movimiento</label>
+				<div class="col-sm-7">
+			 		<input id="nom" type="text" class="form-control" placeholder="Nombre Movimiento">
+			 	</div>
+			</div></br></br></br>
+
+			<div class="form-group">
+			 <label class="col-sm-3 control-label">Tipo Movimiento</label>
+			  <div class="col-sm-4">
+    				<select id="tipo" class="form-control">
+    					<option>-------</option>
+  						<option>EFECTIVO</option>
+  						<option>CREDITO</option>
+ 						<option>CHEQUE</option>
+						<
+					</select>
+ 			 </div>
+			</div></br></br></br>
+	
+				<div class="form-group">
+			 		<label class="col-sm-3 control-label">Valor Movimiento</label>
+			 		<div class="col-sm-4">
+			 			<input id="valor" type="text" class="form-control" placeholder="$">
+			 		</div>
+				</div></br></br>
+						<div class="row"></br></br>
+							<div class="col-md-9 col-md-offset-9">
+								 <button type="button" class="btn btn-primary btn-lg" id="btCrear">Crear Movimiento</button>
+							</div>
+						</div>
+		</form></br></br>
+
+
+
+				 <table id="grid" class="table table-striped">
+                    <thead>
+                        <tr>
+                          	<th>Nombre Movimiento</th>
+    						<th>Tipo Movimiento</th>
+    						<th>Valor Movimiento</th>
+    						<th>Fecha Registro</th>
+    						<th>Acción</th>
+                        </tr> 
+                        
+                    </thead>
+                    <tbody></tbody>
+                </table>
+				
+			
+	</div>
+
+<script>
+	window.onload = function () {
+            var localStorageKeyName = 'data';
+
+            loadFromLocalStorage();
+
+            document.querySelector("#btCrear").addEventListener('click', function () {
+                var nom = document.getElementById("nom"),
+                    tipo = document.getElementById("tipo"),
+                    valor = document.getElementById("valor"),
+                    date = new Date();
+					fecha = String(date.getDate()).concat("/",String(date.getMonth()+1),"/",String(date.getFullYear()));
+
+
+
+
+                // Validate
+                if (nom.value.length === 0 || tipo.value.length === 0 || !parseInt(valor.value)) return;
+
+                var user = {
+                    nom: nom.value,
+                    tipo: tipo.value,
+                    valor: valor.value,
+                    fecha
+                    
+                };
+                
+                // Clean data
+                nom.value = '';
+                tipo.value = '';
+                valor.value = '';
+                
+                
+
+                // Append to my localStorage
+                appendObjectToLocalStorage(user);
+            })
+
+            function appendObjectToLocalStorage(obj) {
+                var users = [],
+                    dataInLocalStorage = localStorage.getItem(localStorageKeyName);
+
+                if (dataInLocalStorage !== null) {
+                    users = JSON.parse(dataInLocalStorage);
+                }
+
+                users.push(obj);
+
+                localStorage.setItem(localStorageKeyName, JSON.stringify(users));
+
+                loadFromLocalStorage();
+            }
+
+            function loadFromLocalStorage() {
+                var users = [],
+                    dataInLocalStorage = localStorage.getItem(localStorageKeyName),
+                    gridBody = document.querySelector("#grid tbody");
+
+                if (dataInLocalStorage !== null) {
+                    users = JSON.parse(dataInLocalStorage);
+                }
+
+                // Draw TR from TBODY
+                gridBody.innerHTML = '';
+                
+                users.forEach(function (x, i) {
+                    var tr = document.createElement("tr"),
+                        tdNom = document.createElement("td"),
+                        tdTipo = document.createElement("td"),
+                        tdValor = document.createElement("td"),
+                        tdFecha = document.createElement("td"),
+                        tdRemove = document.createElement("td"),
+                        btnRemove = document.createElement("button");
+                    
+                    tdNom.innerHTML = x.nom;
+                    tdTipo.innerHTML = x.tipo;
+                    tdValor.innerHTML = x.valor;
+                    tdFecha.innerHTML = x.fecha;
+
+                    btnRemove.textContent = 'Eliminar';
+                    btnRemove.className = 'btn btn-xs btn-info';
+                    btnRemove.addEventListener('click', function(){
+                        removeFromLocalStorage(i);
+                    });
+                    
+                    tdRemove.appendChild(btnRemove);
+                    
+                    tr.appendChild(tdNom);
+                    tr.appendChild(tdTipo);
+                    tr.appendChild(tdValor);
+                    tr.appendChild(tdFecha);
+                    tr.appendChild(tdRemove);
+                    
+                    gridBody.appendChild(tr);
+                });
+            }
+            
+            function removeFromLocalStorage(index){
+                var users = [],
+                    dataInLocalStorage = localStorage.getItem(localStorageKeyName);
+                
+                users = JSON.parse(dataInLocalStorage);
+                
+                users.splice(index, 1);
+                
+                localStorage.setItem(localStorageKeyName, JSON.stringify(users));
+                
+                loadFromLocalStorage();
+            }
+        }
+        
+</script>
+
+
+</body>
+
+</html>
