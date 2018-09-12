@@ -22,7 +22,7 @@
 
 
 </head>
-
+<!-- Código de estilos de cascada CCS3 -->
 <style>
 
 	.form-control {
@@ -71,10 +71,10 @@
 		color: #808383;
 	}
 
-</style>
+</style> <!-- Código de estilos de cascada CCS3 -->
 	
 <body>
-
+<!-- Código HTML5 -->
 	<div class="container"></br>
  	
 	<h2><strong><center>MOVIMIENTOS CLIENTES</center></strong></h2> </br>
@@ -84,8 +84,8 @@
 				<label class="col-sm-3 control-label">Nombre Movimiento</label>
 				<div class="col-sm-7">
 			 		<input id="nom" type="text" class="form-control" placeholder="Nombre Movimiento">
-			 	</div>
-			</div></br></br></br>
+			 	</div>  <!-- close the div col-sm-7-->
+			</div></br></br></br>  <!-- close the div form-group-->
 
 			<div class="form-group">
 			 <label class="col-sm-3 control-label">Tipo Movimiento</label>
@@ -98,21 +98,27 @@
                         <option>CDT</option>
                         <option>AHORRO PROGRAMADO</option>
 						<
-					</select>
- 			 </div>
-			</div></br></br></br>
+					</select> <!-- close the select--> 
+
+ 			 </div>  <!-- close the div col-sm-4--> 
+
+			</div></br></br></br>  <!-- close the div form-group-->
 	
 				<div class="form-group">
 			 		<label class="col-sm-3 control-label">Valor Movimiento</label>
 			 		<div class="col-sm-4">
-			 			<input id="valor" type="text" class="form-control" placeholder="$">
-			 		</div>
-				</div></br></br>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input id="valor" type="number" class="form-control" placeholder="00">
+                        </div><!-- close the div input-group-->
+			 		</div> <!-- close the div col-sm-4-->
+				</div></br></br> <!-- close the div form-group-->
 						<div class="row"></br></br>
 							<div class="col-md-9 col-md-offset-9">
 								 <button type="button" class="btn btn-primary btn-lg" id="btCrear">Crear Movimiento</button>
-							</div>
-						</div>
+							</div> <!-- close the div col-md-9 col-md-offset-9-->
+						</div> <!-- close the div row-->
+
 		</form></br></br>
 
 
@@ -132,8 +138,9 @@
                 </table>
 				
 			
-	</div>
+	</div><!-- close the div container-->
 
+<!--Código de java script JS-->
 <script>
 	window.onload = function () {
             var localStorageKeyName = 'data';
@@ -170,6 +177,7 @@
 
                 // Append to my localStorage
                 appendObjectToLocalStorage(user);
+                alert("El Movimiento fue agregado con éxito"); 
             })
 
             function appendObjectToLocalStorage(obj) {
@@ -245,7 +253,7 @@
             }
         }
         
-</script>
+</script> <!--Código de java script JS-->
 
 
 </body>
